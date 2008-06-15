@@ -10,9 +10,14 @@ module RBench
       @runner = runner
       @name    = name
       @reports = []
-      
+      @block = block
       @runner.separator(@name)
-      self.instance_eval(&block)
+      
+      run
+    end
+    
+    def run
+      self.instance_eval(&@block)
     end
     
     def report(name,times=nil,&block)

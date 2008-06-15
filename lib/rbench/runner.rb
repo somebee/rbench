@@ -33,10 +33,18 @@ module RBench
     
     def summary(name)
       @reports << Summary.new(self,name,@reports.reject{|r| r.is_a?(Summary)})
+      @items << @reports.last
     end
     
     def run(&block)
       self.instance_eval(&block)
+      #
+      #column(:default) if @columns.empty?
+      #
+      #groups.each do |group|
+      #  group.run
+      #end
+      #
       self
     end
     
