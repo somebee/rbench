@@ -36,10 +36,8 @@ module RBench
     end
     
     def run(&block)
-      
       self.instance_eval(&block)
-      
-      return self
+      self
     end
     
     def desc_width
@@ -62,7 +60,7 @@ module RBench
     end
     
     def newline
-      return "\n"
+      "\n"
     end
     
     def columns_line
@@ -78,7 +76,7 @@ module RBench
         out << line.to_s
       end
 
-      return out
+      out
     end
     
   end

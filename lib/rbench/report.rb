@@ -30,9 +30,7 @@ module RBench
     end
     
     def to_s
-      out = ""
-      out << "%-#{@runner.desc_width}s" % name
-      
+      out = "%-#{@runner.desc_width}s" % name
       @runner.columns.each do |column|
         value = @cells[column.name]
         out << column.to_s(value.is_a?(Array) ? @cells.values_at(*value) : value )
