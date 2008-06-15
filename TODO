@@ -1,0 +1,6 @@
+TODO
+====
+* Add #to_html and #to_xml output
+* Write general documentation
+* Make example in readme with a boolean-column
+* Write specs
