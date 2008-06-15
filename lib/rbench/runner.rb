@@ -1,13 +1,11 @@
 module RBench
   class Runner
-    attr_accessor :columns, :groups, :reports, :times, :width
+    attr_accessor :columns, :items, :times, :width
     
     def initialize(times)
       @width = 80
       @times = times
       @columns = []
-      @groups = []
-      @reports = []
       @items = []
     end
     
@@ -19,20 +17,26 @@ module RBench
       @columns << Column.new(self,name,options)
     end
     
-    def group(name,options={},&block)
+    def group(name,&block)
       puts columns_line if @items.empty?
-      @groups << Group.new(self,name,options,&block)
-      @items << @groups.last
+      @items << Group.new(self,name,&block)
     end
     
     def report(name,times=nil,&block)
-      puts columns_line + separator if @items.empty?
-      @reports << Report.new(self,name,times,&block)
-      @items << @reports.last
+      group(nil) unless @items.last.is_a?(Group) && @items.last.anonymous?
+      @items.last.report(name,times,&block)
     end
     
     def summary(name)
-      @reports << Summary.new(self,name,@reports.reject{|r| r.is_a?(Summary)})
+      @items << Summary.new(self,name,reports)
+    end
+
+    def groups
+      @items.reject{|i| !i.is_a?(Group)}
+    end
+    
+    def reports
+      groups.map{|i| i.reports.reject{|r| !r.is_a?(Report) } }.flatten
     end
     
     def run(&block)
@@ -69,14 +73,7 @@ module RBench
     
     def to_s
       out = " " * desc_width + @columns.map {|c| c.to_s }.join + newline
-      out << separator unless @items.first.is_a?(Group)
-      
-      @items.each_with_index do |line,i|
-        out << separator if @items[i-1].is_a?(Group) && line.is_a?(Report)
-        out << line.to_s
-      end
-
-      out
+      out << @items.map {|item| item.to_s}.join
     end
     
   end

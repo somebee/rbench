@@ -6,25 +6,27 @@ module RBench
     
     attr_accessor :name, :reports
     
-    def initialize(runner, name, options = {},&block)
+    def initialize(runner, name, &block)
       @runner = runner
       @name    = name
       @reports = []
       
       @runner.separator(@name)
-      self.instance_eval(&block)
+      self.instance_eval(&block) if block
+    end
+    
+    def anonymous?
+      !!name
     end
     
     def report(name,times=nil,&block)
       report = Report.new(@runner,name,times,&block)
       @reports << report
-      @runner.reports << report
     end
     
     def summary(name)
       summary = Summary.new(@runner,name,@reports.reject{|r| r.is_a?(Summary)})
       @reports << summary
-      @runner.reports << summary
     end
     
     def header
