@@ -51,7 +51,7 @@ module RBench
       # create an anonymous group, or add it to the last open group.
       group(nil) unless @items.last.is_a?(Group) && !@items.last.block
       # now create the report on the last group
-      @items.last.report(name,times=nil,&block)
+      @items.last.report(name,times,&block)
     end
     
     def summary(name)

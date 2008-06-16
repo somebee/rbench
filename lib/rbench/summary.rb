@@ -26,6 +26,7 @@ module RBench
           items.inject(0){|tot,i| v = i.cells[c.name]; tot += v.kind_of?(Numeric) ? v : 0 }
         end
       end
+      puts @runner.separator(nil,"=") unless @group
       puts to_s
     end
   end

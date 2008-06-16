@@ -100,7 +100,7 @@ bench = RBench.run(TIMES) do
     ar { "aaa//aaa//aaa.bbb.ccc.ddd.eee".match(/\.([^\.]*)$/) }
   end
   
-  summary "overall"
+  summary "Overall"
 
 end
 

@@ -1,7 +1,7 @@
 require 'pathname'
 require 'benchmark'
 
-dir = Pathname(__FILE__).dirname.expand_path + 'rbench'
+dir = Pathname(__FILE__).dirname.expand_path + 'rbench/'
 
 require dir + 'runner'
 require dir + 'column'

@@ -1,5 +1,5 @@
 GEM = "rbench"
-VERSION = "0.1"
+VERSION = "0.2"
 AUTHOR = "Yehuda Katz & Sindre Aarsaether"
 EMAIL = "post [a] rbench [d] org" # doesnt actually go anywhere atm..
 HOMEPAGE = "http://www.rbench.org"
@@ -19,5 +19,5 @@ GEMSPEC = Gem::Specification.new do |s|
 
   s.require_path = 'lib'
   s.autorequire = GEM
-  s.files = %w(LICENSE README Rakefile lib/rbench.rb)
+  s.files = FileList['LICENSE','README','Rakefile','lib/**/*.rb','spec/*']
 end
