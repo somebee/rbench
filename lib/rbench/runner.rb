@@ -43,8 +43,8 @@ module RBench
       @columns << Column.new(self,name,options)
     end
     
-    def group(name,&block)
-      @items << Group.new(self,name,&block)
+    def group(name,times=nil,&block)
+      @items << Group.new(self,name,times,&block)
     end
     
     def report(name,times=nil,&block)

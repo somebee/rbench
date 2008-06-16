@@ -114,7 +114,7 @@ RBench.run(TIMES) do
   column :two,  :title => "#2"
   column :diff, :title => "#1/#2", :compare => [:one,:two]
 
-  group("Squeezing") do
+  group "Squeezing", 10000 do
     report "with #squeeze" do
       one { "abc//def//ghi//jkl".squeeze("/") }
       two { "abc///def///ghi///jkl".squeeze("/") }
@@ -127,7 +127,7 @@ RBench.run(TIMES) do
     summary "all methods (totals)"
   end
  
-  group("Splitting") do
+  group "Splitting" do
     report "with #split" do
       one { "aaa/aaa/aaa.bbb.ccc.ddd".split(".") }
       two { "aaa//aaa//aaa.bbb.ccc.ddd.eee".split(".") }

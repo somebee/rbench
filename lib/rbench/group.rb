@@ -4,13 +4,14 @@ module RBench
       send(:undef_method, m) unless m =~ /^(__|is_a?|kind_of?|respond_to?|hash|eql?|inspect|instance_eval)/
     end
     
-    attr_reader :name, :items, :block
+    attr_reader :name, :items, :block, :times
     
-    def initialize(runner, name, &block)
+    def initialize(runner, name, times=nil, &block)
       @runner = runner
       @name    = name
       @items = []
       @block = block
+      @times = times || @runner.times
     end
     
     def prepare
@@ -27,7 +28,7 @@ module RBench
       @items.each{|item| item.run}
     end
 
-    def report(name,times=nil,&block)
+    def report(name,times=@times,&block)
       @items << Report.new(@runner,self,name,times,&block)
     end
     
