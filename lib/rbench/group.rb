@@ -16,7 +16,6 @@ module RBench
     def prepare
       # This just loops through and spawns the reports, and the summary (if exists)
       self.instance_eval(&@block) if @block
-      
       # Now we want to make sure that the summary is 
       @items << @items.shift if @items.first.is_a?(Summary)
     end
