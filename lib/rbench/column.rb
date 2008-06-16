@@ -11,16 +11,16 @@ module RBench
       @default = @compare ? @compare : options[:default]
     end
     
-    def to_s(value=title)
-      str = case value
-        when Array      then "%#{width-1}.2f" % (value[0] / value[1]) + "x"
-        when Float      then "%#{width}.3f" % value
-        when Integer    then "%#{width}.0f" % value
+    def to_s(val=title)
+      str = case val
+        when Array      then "%#{width-1}.2f" % (val[0] / val[1]) + "x"
+        when Float      then "%#{width}.3f" % val
+        when Integer    then "%#{width}.0f" % val
         when TrueClass  then " "*(width/2.0).floor + "X" + " "*(width/2.0).floor
-        when String     then "%#{width}s" % (value)[0,width]
+        when String     then "%#{width}s" % (val)[0,width]
         when Object     then " " * width
       end
-      return " #{(str+" "*width)[0,width]} |"
+      return " #{(str.to_s+" "*width)[0,width]} |"
     end
   end
 end

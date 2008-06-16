@@ -90,7 +90,7 @@ bench = RBench.run(TIMES) do
   
     report "match" do
       dm { "aaa/aaa/aaa.bbb.ccc.ddd".match(/\.([^\.]*)$/) }
-      ar { "aaa//aaa//aaa.bbb.ccc.ddd.eee".match(/\.([^\.]*)$/) }
+      #ar { "aaa//aaa//aaa.bbb.ccc.ddd.eee".match(/\.([^\.]*)$/) }
     end
   
   end

@@ -1,5 +1,5 @@
 GEM = "rbench"
-VERSION = "0.2"
+VERSION = "0.2.1"
 AUTHOR = "Yehuda Katz & Sindre Aarsaether"
 EMAIL = "post [a] rbench [d] org" # doesnt actually go anywhere atm..
 HOMEPAGE = "http://www.rbench.org"

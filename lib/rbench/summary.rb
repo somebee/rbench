@@ -1,5 +1,5 @@
 module RBench
-  class Summary < Report
+  class Summary
     attr_reader :name, :runner, :cells, :items
     attr_accessor :lines
     
@@ -13,15 +13,39 @@ module RBench
     
     def run
       # maybe add convenience-method to group to. group == runner really.
-      items = @group ? @group.items.select{|i| i.is_a?(Report)} : @runner.reports
+      items = (@group ? @group.items & @runner.reports : @runner.reports)
+      
+      rows = items.map{|item| item.cells.values_at(*@runner.columns.map{|c|c.name}) }
+      rows = rows.pop.zip(*rows)
 
-      @runner.columns.each do |c|
-        # TODO: Get number of fields that was counted in, and /
-        value = items.inject(0){|tot,i| v = i.cells[c.name]; tot += v.kind_of?(Numeric) ? v : 0 }
-        @cells[c.name] = value == 0 ? "" : value
+      @runner.columns.each_with_index do |c,i|
+        if c.compare
+          value,comparisons = 0,0
+          items.each do |item|
+            v1,v2 = *item.cells.values_at(*c.compare)
+            if v1.kind_of?(Numeric) && v2.kind_of?(Numeric) && v1 != 0 && v2 != 0
+              value += v1 / v2
+              comparisons += 1
+            end
+          end
+          @cells[c.name] = [value,comparisons] if comparisons > 0
+        else
+          @cells[c.name] = rows[i].compact.select{|r| r.kind_of?(Numeric)}.inject(0){|tot,v| tot += v.to_f }
+        end
       end
-      puts @runner.separator(nil,"=") unless @group
+      
       puts to_s
+    end
+    
+    def to_s
+      out = ""
+      out << @runner.separator(nil,"=") + @runner.newline unless @group
+      out << "%-#{@runner.desc_width}s" % name
+      @runner.columns.each do |column|
+        value = @cells[column.name]
+        out << column.to_s( value )
+      end
+      out << @runner.newline
     end
   end
 end

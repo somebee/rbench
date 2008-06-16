@@ -1,7 +1,7 @@
 module RBench
   class Report
     self.instance_methods.each do |m|
-      send(:undef_method, m) unless m =~ /^(__|is_a?|kind_of?|respond_to?|inspect|instance_eval)/
+      send(:undef_method, m) unless m =~ /^(__|is_a?|kind_of?|respond_to?|hash|inspect|instance_eval|eql?)/
     end
     
     attr_reader :name, :cells
@@ -42,7 +42,10 @@ module RBench
       out = "%-#{@runner.desc_width}s" % name
       @runner.columns.each do |column|
         value = @cells[column.name]
-        out << column.to_s(value.is_a?(Array) ? @cells.values_at(*value) : value )
+        value = @cells.values_at(*value) if value.is_a?(Array)
+        value = nil if value.is_a?(Array) && value.nitems != 2
+        
+        out << column.to_s(value)
       end
       out << @runner.newline
     end
