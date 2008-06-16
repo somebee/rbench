@@ -23,12 +23,15 @@ module RBench
     end
     
     def report(name,times=nil,&block)
-      group(nil) unless @items.last.is_a?(Group) && @items.last.anonymous?
+      group(nil) unless @items.last.is_a?(Group) && !@items.last.anonymous?
+        # puts "ADDED NEW GROUP"
+        # puts @items.map{|i| i.respond_to?(:name) ? i.name : i.inspect}.inspect
       @items.last.report(name,times,&block)
+      
     end
     
     def summary(name)
-      @items << Summary.new(self,name,reports)
+      @items << Summary.new(self,name)
     end
 
     def groups
@@ -36,11 +39,19 @@ module RBench
     end
     
     def reports
-      groups.map{|i| i.reports.reject{|r| !r.is_a?(Report) } }.flatten
+      groups.map{|g| g.lines.reject{|l| !l.is_a?(Report) } }.flatten
     end
     
     def run(&block)
       self.instance_eval(&block)
+      
+      column(:results, :title => "Results") if @columns.empty?
+      
+      items.each_with_index do |item,i|
+        item.lines = @items[0,i] if item.is_a?(Summary)
+        item.run if item.respond_to?(:run)
+      end
+      
       self
     end
     

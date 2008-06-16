@@ -11,6 +11,7 @@ module RBench
       @name   = name
       @times  = (times || runner.times).ceil
       @cells  = {}
+      @block  = block 
       
       # Setting the default for all cells
       runner.columns.each {|c| @cells[c.name] = c.name == :times ? "x#{@times}" : c.default }
@@ -23,9 +24,10 @@ module RBench
           end
         CLASS
       end
-      
-      self.instance_eval(&block)
-      
+    end
+    
+    def run
+      self.instance_eval(&@block)
       puts to_s
     end
     
