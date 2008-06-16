@@ -33,6 +33,31 @@ end
 puts
 puts
 
+RBench.run(TIMES) do
+  
+  format :width => 80
+
+  report "Squeezing with #squeeze" do
+    "abc//def//ghi//jkl".squeeze("/")
+  end
+
+  report "Squeezing with #gsub" do
+    "abc//def//ghi//jkl".gsub(/\/+/, "/")
+  end
+
+  report "Splitting with #split" do
+    "aaa/aaa/aaa.bbb.ccc.ddd".split(".")
+  end
+
+  report "Splitting with #match" do
+    "aaa/aaa/aaa.bbb.ccc.ddd".match(/\.([^\.]*)$/)
+  end
+  
+end
+
+puts
+puts
+
 bench = RBench.run(TIMES) do
 
   column :times
@@ -52,7 +77,7 @@ bench = RBench.run(TIMES) do
       ar { "aaa//aaa//aaa.bbb.ccc.ddd.eee".match(/\.([^\.]*)$/) }
     end
     
-    summary "Grouptotal"
+    summary "methods (totals)" # should display total for all preceding rows within this group / scope
   
   end
 
@@ -70,12 +95,12 @@ bench = RBench.run(TIMES) do
   
   end
   
-  report "tester" do
+  report "testing" do
     dm { "aaa/aaa/aaa.bbb.ccc.ddd".match(/\.([^\.]*)$/) }
     ar { "aaa//aaa//aaa.bbb.ccc.ddd.eee".match(/\.([^\.]*)$/) }
   end
   
-  summary "Overall"
+  summary "overall"
 
 end
 
@@ -83,8 +108,6 @@ puts
 puts
 
 RBench.run(TIMES) do
-  
-  format :width => 65
 
   column :times
   column :one,  :title => "#1"

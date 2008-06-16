@@ -6,8 +6,9 @@ module RBench
     
     attr_reader :name, :cells
     
-    def initialize(runner, name, times=nil,&block)
+    def initialize(runner, group, name, times=nil,&block)
       @runner = runner
+      @group  = group
       @name   = name
       @times  = (times || runner.times).ceil
       @cells  = {}
@@ -27,7 +28,13 @@ module RBench
     end
     
     def run
-      self.instance_eval(&@block)
+      # runs the actual benchmarks. If there is only one column, just evaluate the block itself.
+      if @runner.columns.length == 1
+        @cells[@runner.columns.first.name] = Benchmark.measure { @times.times(&@block) }.real
+      else
+        self.instance_eval(&@block)
+      end
+      # puts its row now that it is complete
       puts to_s
     end
     

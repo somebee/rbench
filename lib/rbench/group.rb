@@ -4,45 +4,40 @@ module RBench
       send(:undef_method, m) unless m =~ /^(__|is_a?|kind_of?|respond_to?|inspect|instance_eval)/
     end
     
-    attr_accessor :name, :lines
+    attr_reader :name, :items, :block
     
     def initialize(runner, name, &block)
       @runner = runner
       @name    = name
-      @lines = []
+      @items = []
       @block = block
     end
     
-    def run
-      @runner.separator(@name)
+    def prepare
+      # This just loops through and spawns the reports, and the summary (if exists)
       self.instance_eval(&@block) if @block
-      lines.each_with_index do |line,i| 
-        line.lines = @lines[0,i] if line.is_a?(Summary)
-        line.run
-      end
+      
+      # Now we want to make sure that the summary is 
+      @items << @items.shift if @items.first.is_a?(Summary)
     end
     
-    def anonymous?
-      !!name
+    def run
+      # Put a separator with the group-name at the top. puts?
+      puts @runner.separator(@name)
+      # Now loop through the items in this group, and run them
+      @items.each{|item| item.run}
     end
-    
+
     def report(name,times=nil,&block)
-      report = Report.new(@runner,name,times,&block)
-      @lines << report
+      @items << Report.new(@runner,self,name,times,&block)
     end
     
     def summary(name)
-      summary = Summary.new(@runner,name)
-      @lines << summary
-    end
-    
-    def header
-      "---" + name.to_s + "-" * (@runner.width - name.to_s.length - 3)
+      @items.unshift(Summary.new(@runner,self,name)) unless @items.detect{|i| i.is_a?(Summary)}
     end
     
     def to_s
-      out = header + @runner.newline
-      out << @lines.map { |r| r.to_s }.join
+      @runner.separator(@name) << @items.map { |item| item.to_s }.join
     end
   end
 end
