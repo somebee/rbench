@@ -29,7 +29,7 @@ module RBench
             end
           end
           @cells[c.name] = [value,comparisons] if comparisons > 0
-        else
+        elsif c.name != :times
           @cells[c.name] = rows[i].compact.select{|r| r.kind_of?(Numeric)}.inject(0){|tot,v| tot += v.to_f }
         end
       end
