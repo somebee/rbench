@@ -1,5 +1,3 @@
-require 'pathname'
-
 GEM = "rbench"
 VERSION = "0.2"
 AUTHOR = "Yehuda Katz & Sindre Aarsaether"
@@ -7,13 +5,10 @@ EMAIL = "post [a] rbench [d] org" # doesnt actually go anywhere atm..
 HOMEPAGE = "http://www.rbench.org"
 SUMMARY = "Library for generating nice ruby-benchmarks"
 
-PACKAGE_FILES = [
-  'README',
-  'LICENSE',
-  '*.rb',
-  'lib/**/*.rb',
-  'spec/**/*.rb'
-].collect { |pattern| Pathname.glob(pattern) }.flatten.map{|p| p.to_s}
+RDOC_FILES = %w[ README LICENSE TODO ]
+SPEC_FILES = %w[ rbench_spec.rb spec.opts spec_helper.rb ].map{|f| "spec/"+f}
+LIB_FILES =  %w[ .rb /summary.rb /runner.rb /report.rb /group.rb /column.rb].map{|f| "lib/rbench"+f}
+PACKAGE_FILES = RDOC_FILES + SPEC_FILES + LIB_FILES
 
 puts PACKAGE_FILES.inspect
 
@@ -22,7 +17,7 @@ GEMSPEC = Gem::Specification.new do |s|
   s.version = VERSION
   s.platform = Gem::Platform::RUBY
   s.has_rdoc = true
-  s.extra_rdoc_files = %w[ README LICENSE TODO ]
+  s.extra_rdoc_files = RDOC_FILES
   s.summary = SUMMARY
   s.description = s.summary
   s.author = AUTHOR
