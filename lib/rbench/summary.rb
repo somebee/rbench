@@ -2,7 +2,7 @@ module RBench
   class Summary
     attr_reader :name, :runner, :cells, :items
     attr_accessor :lines
-    
+
     def initialize(runner, group, name)
       @runner = runner
       @group  = group
@@ -10,13 +10,12 @@ module RBench
       @cells  = {}     # A hash with keys as columns, and values being the result
       @items  = []
     end
-    
+
     def run
       # maybe add convenience-method to group to. group == runner really.
       items = (@group ? @group.items & @runner.reports : @runner.reports)
-      
-      rows = items.map{|item| item.cells.values_at(*@runner.columns.map{|c|c.name}) }
-      rows = rows.pop.zip(*rows)
+
+      rows = items.map{|item| item.cells.values_at(*@runner.columns.map{|c|c.name}) }.transpose  
 
       @runner.columns.each_with_index do |c,i|
         if c.compare
@@ -33,10 +32,10 @@ module RBench
           @cells[c.name] = rows[i].compact.select{|r| r.kind_of?(Numeric)}.inject(0){|tot,v| tot += v.to_f }
         end
       end
-      
+
       puts to_s
     end
-    
+
     def to_s
       out = ""
       out << @runner.separator(nil,"=") + @runner.newline unless @group
