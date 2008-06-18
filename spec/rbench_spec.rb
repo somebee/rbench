@@ -3,6 +3,26 @@ require Pathname(__FILE__).dirname.expand_path + 'spec_helper'
 
 TIMES = 100_000
 
+bench = RBench.prepare do 
+  report "Squeezing with #squeeze" do
+    "abc//def//ghi//jkl".squeeze("/")
+  end
+
+  report "Squeezing with #gsub" do
+    "abc//def//ghi//jkl".gsub(/\/+/, "/")
+  end
+end
+
+bench.run(10000)
+
+#puts
+#puts
+
+#rbench 'testing', 1000 { "abc//def//ghi//jkl".squeeze("/") }
+
+puts
+puts
+
 RBench.run(TIMES) do
   
   column :one
@@ -34,8 +54,6 @@ puts
 puts
 
 RBench.run(TIMES) do
-  
-  format :width => 80
 
   report "Squeezing with #squeeze" do
     "abc//def//ghi//jkl".squeeze("/")

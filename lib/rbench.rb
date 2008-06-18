@@ -10,7 +10,11 @@ require dir + 'report'
 require dir + 'summary'
 
 module RBench
+  def self.prepare(&block)
+    Runner.new
+  end
+  
   def self.run(times=1, &block)
-    Runner.new(times).run(&block)
+    Runner.new.run(times,&block)
   end
 end

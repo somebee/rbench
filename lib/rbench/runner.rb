@@ -1,16 +1,17 @@
 module RBench
   class Runner
     attr_accessor :columns, :items, :times, :width
+    attr_reader :prepared
     
-    def initialize(times)
+    def initialize()
       @width = 0
       @times = times
       @columns = []
       @items = []
+      @prepared = false
     end
     
-    def run(&block)
-      
+    def prepare
       # initiate all the columns, groups, reports, and summaries on top level.
       self.instance_eval(&block)
       
@@ -25,6 +26,16 @@ module RBench
       # if on columns were set, create a default column
       column(:results, :title => "Results") if @columns.empty?
       
+      @prepared = true
+      
+      self
+    end
+    
+    def run(times=times,&block)
+      
+      prepare unless prepared
+      # Setting how many times to run.
+      @times = times      
       # since we are about to start rendering, we put out the column-header
       puts header
       
