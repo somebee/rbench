@@ -43,7 +43,7 @@ module RBench
       @runner.columns.each do |column|
         value = @cells[column.name]
         value = @cells.values_at(*value) if value.is_a?(Array)
-        value = nil if value.is_a?(Array) && value.nitems != 2
+        value = nil if value.is_a?(Array) && value.compact.length != 2
         
         out << column.to_s(value)
       end

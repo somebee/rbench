@@ -1,8 +1,8 @@
 GEM = "rbench"
-VERSION = "0.2.3"
+VERSION = "0.2.4"
 AUTHOR = "Yehuda Katz & Sindre Aarsaether"
-EMAIL = "post [a] rbench [d] org" # doesnt actually go anywhere atm..
-HOMEPAGE = "http://www.rbench.org"
+EMAIL = "sindre [a] identu [d] no" # doesnt actually go anywhere atm..
+HOMEPAGE = "http://www.github.com/somebee/rbench"
 SUMMARY = "Library for generating nice ruby-benchmarks"
 
 RDOC_FILES = %w[ README LICENSE TODO ]
