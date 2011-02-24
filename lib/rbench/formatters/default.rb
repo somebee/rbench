@@ -2,7 +2,7 @@
 
 module RBench
   class DefaultFormatter < Formatter
-    def summary(name, group, cells)
+    def summary(instance, name, group, cells)
       out = ""
       out << self.separator(nil, "=") + self.newline unless group
       out << "%-#{@runner.desc_width}s" % name
@@ -13,7 +13,7 @@ module RBench
       out << self.newline
     end
 
-    def report(name, cells)
+    def report(instance, name, cells)
       out = "%-#{@runner.desc_width}s" % name
       @runner.columns.each do |column|
         value = cells[column.name]
@@ -25,11 +25,12 @@ module RBench
       out << self.newline
     end
 
-    def group(name, items)
+    def group(instance, name, items)
       @runner.separator(name) << items.map { |item| item.to_s }.join
     end
 
-    def column(value)
+    def column(instance, value)
+      width = instance.width
       str = case value
         when Array      then "%#{width-1}.2f" % (value[0] / value[1]) + "x"
         when Float      then "%#{width}.3f" % value
@@ -41,17 +42,17 @@ module RBench
       return " #{(str.to_s + " " * width)[0, width]} |"
     end
 
-    def runner(columns, items)
-      out = " " * @instance.desc_width + columns.map { |c| c.to_s }.join + self.newline
+    def runner_report(instance, columns, items)
+      out = " " * instance.desc_width + columns.map { |c| c.to_s }.join + self.newline
       out << items.map { |item| item.to_s }.join
     end
 
-    def separator(title = nil, chr = "-", length = @runner.width)
+    def separator(instance, title = nil, chr = "-", length = @runner.width)
       title ? chr * 2 + title + chr * (@runner.width - title.length - 2) : chr * length
     end
 
-    def header(columns)
-      " " * @instance.desc_width + columns.map { |c| c.to_s }.join + self.newline
+    def header(instance, columns)
+      " " * instance.desc_width + columns.map { |c| c.to_s }.join + self.newline
     end
   end
 end

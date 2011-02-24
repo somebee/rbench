@@ -47,7 +47,7 @@ module RBench
       @items << Group.new(self, name, times, &block)
     end
 
-    def report(name,times = nil,&block)
+    def report(name,times = nil, &block)
       # create an anonymous group, or add it to the last open group.
       group(nil) unless @items.last.is_a?(Group) && !@items.last.block
       # now create the report on the last group
@@ -77,7 +77,7 @@ module RBench
     end
 
     def header
-      self.formatter.header(columns)
+      RBench.formatter.header(self, columns)
     end
 
     def desc_width
@@ -92,12 +92,8 @@ module RBench
       header.length - 1
     end
 
-    def formatter
-      @formatter ||= RBench.formatter.new(@runner, self)
-    end
-
     def to_s
-      self.formatter.runner(@columns, @items)
+      RBench.formatter.runner_report(self, @columns, @items)
     end
   end
 end

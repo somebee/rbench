@@ -23,7 +23,7 @@ module RBench
 
     def run
       # Put a separator with the group-name at the top. puts?
-      puts self.formatter.separator(@name)
+      puts RBench.formatter.separator(self, @name)
       # Now loop through the items in this group, and run them
       @items.each { |item| item.run }
     end
@@ -36,12 +36,8 @@ module RBench
       @items.unshift(Summary.new(@runner,self,name)) unless @items.detect{|i| i.is_a?(Summary)}
     end
 
-    def formatter
-      @formatter ||= RBench.formatter.new(@runner, self)
-    end
-
     def to_s
-      self.formatter.group(name, items)
+      RBench.formatter.group(self, name, items)
     end
   end
 end

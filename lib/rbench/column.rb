@@ -11,12 +11,8 @@ module RBench
       @default = @compare ? @compare : options[:default]
     end
 
-    def formatter
-      @formatter ||= RBench.formatter.new(@runner, self)
-    end
-
     def to_s(val = title)
-      self.formatter.column(val)
+      RBench.formatter.column(self, val)
     end
   end
 end

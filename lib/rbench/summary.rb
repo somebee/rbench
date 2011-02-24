@@ -36,12 +36,8 @@ module RBench
       puts to_s
     end
 
-    def formatter
-      @formatter ||= RBench.formatter.new(@runner, self)
-    end
-
     def to_s
-      self.formatter.summary(@name, @group, @cells)
+      RBench.formatter.summary(self, @name, @group, @cells)
     end
   end
 end

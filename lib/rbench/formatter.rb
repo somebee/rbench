@@ -2,16 +2,16 @@
 
 module RBench
   class Formatter
-    def initialize(runner, instance)
-      @runner, @instance = runner, instance
+    attr_accessor :runner
+    def initialize
+      self.setup if self.respond_to?(:setup)
     end
 
     def newline
       "\n"
     end
 
-    def width
-      @instance.width
+    def finish_run
     end
 
     def summary(*)
@@ -30,8 +30,8 @@ module RBench
       raise NotImplementedError.new("You have to redefine #{self.class}#column")
     end
 
-    def runner(*)
-      raise NotImplementedError.new("You have to redefine #{self.class}#runner")
+    def runner_report(*)
+      raise NotImplementedError.new("You have to redefine #{self.class}#runner_report")
     end
   end
 end

@@ -11,14 +11,16 @@ require dir + 'summary'
 require dir + 'formatter'
 
 module RBench
-  def self.run(times=1, &block)
-    Runner.new(times).run(&block)
+  def self.run(times = 1, formatter = self.formatter, &block)
+    formatter.runner = Runner.new(times)
+    formatter.runner.run(&block)
+    formatter.finish_run
   end
 
   def self.formatter
     @formatter ||= begin
       require "rbench/formatters/default"
-      DefaultFormatter
+      DefaultFormatter.new
     end
   end
 
