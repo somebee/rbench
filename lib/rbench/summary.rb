@@ -15,7 +15,7 @@ module RBench
       # maybe add convenience-method to group to. group == runner really.
       items = (@group ? @group.items & @runner.reports : @runner.reports)
 
-      rows = items.map{|item| item.cells.values_at(*@runner.columns.map{|c|c.name}) }.transpose  
+      rows = items.map{|item| item.cells.values_at(*@runner.columns.map{|c|c.name}) }.transpose
 
       @runner.columns.each_with_index do |c,i|
         if c.compare
@@ -36,15 +36,12 @@ module RBench
       puts to_s
     end
 
+    def formatter
+      @formatter ||= RBench.formatter.new(@runner, self)
+    end
+
     def to_s
-      out = ""
-      out << @runner.separator(nil,"=") + @runner.newline unless @group
-      out << "%-#{@runner.desc_width}s" % name
-      @runner.columns.each do |column|
-        value = @cells[column.name]
-        out << column.to_s( value )
-      end
-      out << @runner.newline
+      self.formatter.summary(@name, @group, @cells)
     end
   end
 end
