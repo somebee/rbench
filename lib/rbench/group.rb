@@ -1,7 +1,7 @@
 module RBench
   class Group
     self.instance_methods.each do |m|
-      send(:undef_method, m) unless m =~ /^(__|is_a?|kind_of?|respond_to?|hash|eql?|inspect|instance_eval|object_id)/
+      send(:undef_method, m) unless m =~ /^(__|is_a?|kind_of?|respond_to?|hash|eql?|inspect|instance_eval|object_id|extend)/
     end
 
     attr_reader :name, :items, :block, :times
