@@ -1,7 +1,7 @@
 module RBench
   class Report
     self.instance_methods.each do |m|
-      send(:undef_method, m) unless m =~ /^(__|is_a?|kind_of?|respond_to?|hash|inspect|instance_eval|eql?)/
+      send(:undef_method, m) unless m =~ /^(__|is_a?|kind_of?|respond_to?|hash|inspect|instance_eval|eql?|object_id)/
     end
 
     attr_reader :name, :cells
