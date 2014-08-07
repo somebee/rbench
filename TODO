@@ -1,6 +1,6 @@
 TODO
 ====
-* Add #to_html and #to_xml output
+* Add HTML & XML formatters
 * Write general documentation
 * Make example in readme with a boolean-column
 * Write specs
